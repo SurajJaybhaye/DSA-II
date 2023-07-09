@@ -1,0 +1,107 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include "func.h"
+
+void initBT(BT *t){
+    t=NULL;
+}
+
+void insertBST(BT *t, int key){
+    if(*t==NULL){
+        *t=(node *)malloc(sizeof(node));
+        (*t)->data=key;
+        (*t)->left=NULL;
+        (*t)->right=NULL;
+    }
+    else{
+        if(key<(*t)->data){
+            insertBST(&(*t)->left, key);
+        }
+        else if(key>(*t)->data){
+            insertBST(&(*t)->right, key);
+        }
+    }
+}
+
+int searchBST(BT t, int key, int count){
+    if(t==NULL){
+        return count;
+    }
+    if(t->data==key){
+        return ++count;
+    }
+    if(t->data>key){
+        searchBST(t->left,key,++count);
+    }else if(t->data<key){
+        searchBST(t->right,key,++count);
+    }
+
+}
+
+
+
+void insertBT(BT *t, int key){
+	if ( (*t) == NULL){
+		BT n = (BT) malloc(sizeof(node));
+		n->data = key;
+		n->left = n->right = NULL;
+		*t = n;
+	}
+
+	if(rand() % 2 == 0){
+		if(!(*t)->left){
+			BT n = (BT) malloc(sizeof(node));
+			n->data = key;
+			n->left = n->right = NULL;
+			(*t)->left = n;
+			return;
+		}
+
+		insertBT(&(*t)->left, key);
+	}
+	else {
+		if(!(*t)->right){
+			BT n = (BT) malloc(sizeof(node));
+			n->data = key;
+			n->left = n->right = NULL;
+			(*t)->right = n;
+			return;
+		}
+		insertBT(&(*t)->right, key);
+	}
+	return;
+}
+
+
+int count(BT t)
+{
+
+    if (t == NULL)
+        return 0;
+    else
+        return(count(t->left) + 1 + count(t->right));
+}
+
+void searchBT(BT t, int key, int *flag, int *count){
+
+	*count = *count + 1;
+	if(!t)
+		return;
+	if(t->data == key){
+		*flag = 1;
+		return;
+	}
+	if (*flag == 0)
+		searchBT(t->left, key, flag, count);
+	if (*flag == 0)
+		searchBT(t->right, key, flag, count);
+	return;
+}
+
+void inorder(BT t){
+    if(t!=NULL){
+        inorder(t->left);
+        printf("%d ", t->data);
+        inorder(t->right);
+    }
+}
